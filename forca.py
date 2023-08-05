@@ -1,24 +1,23 @@
-def jogo_da_forca(letra_cliente,chance):
+def jogo_da_forca(letra_cliente):
     palavra = "python"
 
     letras_usuario = []
 
-    chances = chance
+    chances = 4
 
     ganhou = False
-    while True:
+    
+    # criar a nossa logica
 
-        # criar a nossa logica
+    for letra in palavra:
 
-        for letra in palavra:
+        if letra.lower() in letras_usuario:
 
-            if letra.lower() in letras_usuario:
+            print(letra, end=" ")
 
-                print(letra, end=" ")
+        else:
 
-            else:
-
-                print("_", end=" ")
+            print("_", end=" ")
 
         print(f"Você tem {chances} chances")
 
