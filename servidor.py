@@ -51,9 +51,25 @@ def cria_conexoes_clientes(servidor_socket):
 
 
 def controle_jogo(cliente_socket1, cliente_socket2):
-    id_cliente, letra = comunicacao.recebe_mensagem(cliente_socket1)
-    forca.jogo_da_forca(letra)
-    return
+    chances = 5
+    palavra = "python"
+    letras_usuario = []
+    comunicacao.envia_mensagem("palavara",palavra,cliente_socket1)
+    while True:
+        id_cliente, letra = comunicacao.recebe_mensagem(cliente_socket1)
+        print(letras_usuario)
+        letras_usuario, chances = forca.jogo_da_forca(letras_usuario, chances, 
+                                                      palavra, letra)
+        
+        comunicacao.envia_mensagem("jogada",letras_usuario,cliente_socket1)
+        ganhou = forca.verifica_fim(palavra,chances,letras_usuario)
+        if(ganhou):
+            comunicacao.envia_mensagem("fim","fim",cliente_socket1)
+            break
+        else:
+            comunicacao.envia_mensagem("fim","nao_fim",cliente_socket1)
+            continue
+        
 
 
 def main():
