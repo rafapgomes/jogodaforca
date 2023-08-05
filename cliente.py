@@ -34,14 +34,34 @@ def partida(servidor_socket, cliente_id):
         # envia a letra pro servidor
         servidor_socket.sendall(f"{cliente_id}:{letra}".encode())
         # recebe a mensagem do servidor depois de jogar
-        mensagem = comunicacao.recebe_mensagem(servidor_socket)[1]
+        chance,mensagem = comunicacao.recebe_mensagem(servidor_socket)
         forca.imprime_palavra(palavra,mensagem)
+
+        # recebe a mensagem informando quantas chances o cliente tem
+        print("Voce tem ",chance,"chances")
+
+        # recebe a mensagem informando sobre o estado do jogo
         prefixo, mensagem= comunicacao.recebe_mensagem(servidor_socket)
-        if(prefixo == 'fim' and mensagem == "fim"):
+        # recebe a mensagem informando sobre as chances que o cliente ainda tem
+        
+        
+        
+        # verifica se o jogador ganhou, caso contrário ele continua jogando
+        if(prefixo == 'fim' and mensagem == "ganhou"):
             print("Voce ganhou")
             fim_jogo = True
+        
+        # verifica se o jogador perdeu
+        elif(prefixo == "fim" and mensagem == "perdeu"):
+            print("Suas chances acabaram")
+            print("A palavra era ",palavra)
+            fim_jogo = True
+
+        # caso o jogador nao tenha perdido e nem ganhado, continua jogando
         elif(prefixo == 'fim' and mensagem == "nao_fim"):
             continue
+        
+        
     return
 
 
