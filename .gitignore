@@ -1,3 +1,5 @@
-
+# pycache ignorado
 __pycache__
+
+#.vscode ignorado
 .vscode
