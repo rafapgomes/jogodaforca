@@ -21,7 +21,7 @@ def verifica_fim(palavra, chances, letras_usuario):
 
             ganhou = False
 
-    if chances == 0 or ganhou:
+    if ganhou:
         return ganhou    
 
 
