@@ -73,7 +73,7 @@ def partida(servidor_socket, cliente_id):
 
                     # caso o jogador nao tenha perdido e nem ganhado, continua jogando
                     elif(prefixo == 'fim' and mensagem == "nao_fim"):
-                        continue
+                        vez_jogador = 0
                     
                 
                       

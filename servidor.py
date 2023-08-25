@@ -64,27 +64,36 @@ def controle_jogo(cliente_socket1, cliente_socket2):
 
     
     while not fim :
+            jogada_valida = 0 
+            print("teste")
             if(vez == 1):
                 comunicacao.envia_mensagem('sua_vez','1',cliente_socket1)
+                cliente_atual = cliente_socket1
             elif(vez == 2): 
                 comunicacao.envia_mensagem('sua_vez','2',cliente_socket2)
+                cliente_atual = cliente_socket2
             # jogo
-            while True:
-                id_cliente, letra = comunicacao.recebe_mensagem(cliente_socket1)
+            print("teste2")
+            while not jogada_valida:
+                id_cliente, letra = comunicacao.recebe_mensagem(cliente_atual)
                 print(letras_usuario)
                 letras_usuario, chances = forca.jogo_da_forca(letras_usuario, chances, 
                                                             palavra, letra)
                 
                 # envia a jogada para o jogador
-                comunicacao.envia_mensagem(chances,letras_usuario,cliente_socket1)
+                comunicacao.envia_mensagem(chances,letras_usuario,cliente_atual)
                 # informa ao jogador quantas chances ele tem
                 # ps: apenas para fim de informaçao pq o servidor faz o controle
 
                 ganhou = forca.verifica_fim(palavra,chances,letras_usuario)
+                jogada_valida = 1
+                vez = vez%2 +1
+                print(vez)
                 if(ganhou):
                         comunicacao.envia_mensagem("fim","ganhou",cliente_socket1)
                         
                         comunicacao.envia_mensagem("fim","ganhou",cliente_socket2)
+                        fim = 1
 
                         break
                 if(chances == 0):
@@ -92,13 +101,19 @@ def controle_jogo(cliente_socket1, cliente_socket2):
                         comunicacao.envia_mensagem("fim","ganhou",cliente_socket1)
 
                         comunicacao.envia_mensagem("fim","ganhou",cliente_socket2)
+                        fim = 1
 
                         break
                     comunicacao.envia_mensagem("fim","perdeu",cliente_socket1)
+
+                    comunicacao.envia_mensagem("fim","perdeu",cliente_socket2)
+                    fim = 1
+
                     break
                 else:
-                    comunicacao.envia_mensagem("fim","nao_fim",cliente_socket1)
-                    continue
+                    comunicacao.envia_mensagem("fim","nao_fim",cliente_atual)
+
+
         
 def main():
     servidor = inicializaservidor()
