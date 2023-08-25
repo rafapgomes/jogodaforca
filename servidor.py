@@ -54,37 +54,56 @@ def controle_jogo(cliente_socket1, cliente_socket2):
     chances = 5
     palavra = "python"
     letras_usuario = []
-    comunicacao.envia_mensagem("palavra",palavra,cliente_socket1)
-    while True:
-        id_cliente, letra = comunicacao.recebe_mensagem(cliente_socket1)
-        print(letras_usuario)
-        letras_usuario, chances = forca.jogo_da_forca(letras_usuario, chances, 
-                                                      palavra, letra)
-        
-        # envia a jogada para o jogador
-        comunicacao.envia_mensagem(chances,letras_usuario,cliente_socket1)
-        # informa ao jogador quantas chances ele tem
-        # ps: apenas para fim de informaçao pq o servidor faz o controle
+    fim = 0
+    vez = 1
+    #informa aos dois jogadores qual a palavra para ser descoberta
 
-        ganhou = forca.verifica_fim(palavra,chances,letras_usuario)
-        if(ganhou):
-                comunicacao.envia_mensagem("fim","ganhou",cliente_socket1)
-                break
-        if(chances == 0):
-            if(ganhou):
-                comunicacao.envia_mensagem("fim","ganhou",cliente_socket1)
-                break
-            comunicacao.envia_mensagem("fim","perdeu",cliente_socket1)
-            break
-        else:
-            comunicacao.envia_mensagem("fim","nao_fim",cliente_socket1)
-            continue
-               
+    comunicacao.envia_mensagem("palavra","python",cliente_socket1)
+
+    comunicacao.envia_mensagem("palavra","python",cliente_socket2)
+
+    
+    while not fim :
+            if(vez == 1):
+                comunicacao.envia_mensagem('sua_vez','1',cliente_socket1)
+            elif(vez == 2): 
+                comunicacao.envia_mensagem('sua_vez','2',cliente_socket2)
+            # jogo
+            while True:
+                id_cliente, letra = comunicacao.recebe_mensagem(cliente_socket1)
+                print(letras_usuario)
+                letras_usuario, chances = forca.jogo_da_forca(letras_usuario, chances, 
+                                                            palavra, letra)
+                
+                # envia a jogada para o jogador
+                comunicacao.envia_mensagem(chances,letras_usuario,cliente_socket1)
+                # informa ao jogador quantas chances ele tem
+                # ps: apenas para fim de informaçao pq o servidor faz o controle
+
+                ganhou = forca.verifica_fim(palavra,chances,letras_usuario)
+                if(ganhou):
+                        comunicacao.envia_mensagem("fim","ganhou",cliente_socket1)
+                        
+                        comunicacao.envia_mensagem("fim","ganhou",cliente_socket2)
+
+                        break
+                if(chances == 0):
+                    if(ganhou):
+                        comunicacao.envia_mensagem("fim","ganhou",cliente_socket1)
+
+                        comunicacao.envia_mensagem("fim","ganhou",cliente_socket2)
+
+                        break
+                    comunicacao.envia_mensagem("fim","perdeu",cliente_socket1)
+                    break
+                else:
+                    comunicacao.envia_mensagem("fim","nao_fim",cliente_socket1)
+                    continue
         
 def main():
     servidor = inicializaservidor()
     cliente1, cliente2 = cria_conexoes_clientes(servidor)
-    controle_jogo(cliente1, cliente2)
+    controle_jogo(cliente1,cliente2)
     
 
 main()

@@ -1,4 +1,5 @@
 def envia_mensagem(prefixo, mensagem, destinatario):
+    print(f"{prefixo}:{mensagem}")
     destinatario.sendall(f"{prefixo}:{mensagem}".encode())   
 
 
