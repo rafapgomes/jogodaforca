@@ -1,3 +1,5 @@
+
+
 def jogo_da_forca(letras_usuario, chances, palavra, letra_user):
     # criar a nossa logica
     
@@ -29,7 +31,7 @@ def imprime_palavra(palavra, letras_usuario):
     for letra in palavra:
 
         if letra.lower() in letras_usuario:
-
+            
             print(letra, end=" ")
 
         else:

@@ -61,11 +61,11 @@ def controle_jogo(cliente_socket1, cliente_socket2):
     comunicacao.envia_mensagem("palavra","python",cliente_socket1)
 
     comunicacao.envia_mensagem("palavra","python",cliente_socket2)
-
+    forca.imprime_palavra("python","pyt")
     
     while not fim :
             jogada_valida = 0 
-            print("teste")
+            
             if(vez == 1):
                 comunicacao.envia_mensagem('sua_vez','1',cliente_socket1)
                 cliente_atual = cliente_socket1
@@ -73,9 +73,8 @@ def controle_jogo(cliente_socket1, cliente_socket2):
                 comunicacao.envia_mensagem('sua_vez','2',cliente_socket2)
                 cliente_atual = cliente_socket2
             # jogo
-            print("teste2")
             while not jogada_valida:
-                id_cliente, letra = comunicacao.recebe_mensagem(cliente_atual)
+                letra = comunicacao.recebe_mensagem(cliente_atual)[1]
                 print(letras_usuario)
                 letras_usuario, chances = forca.jogo_da_forca(letras_usuario, chances, 
                                                             palavra, letra)
@@ -88,7 +87,6 @@ def controle_jogo(cliente_socket1, cliente_socket2):
                 ganhou = forca.verifica_fim(palavra,chances,letras_usuario)
                 jogada_valida = 1
                 vez = vez%2 +1
-                print(vez)
                 if(ganhou):
                         comunicacao.envia_mensagem("fim","ganhou",cliente_socket1)
                         

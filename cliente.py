@@ -1,6 +1,7 @@
 import socket
 import comunicacao
 import forca
+import interface2
 
 
 def inicializa_sockets():
@@ -19,9 +20,9 @@ def inicializa_sockets():
     print(f"cliente {cliente_id} conectado")
     return servidor_socket, cliente_id
 
-
+        
 def partida(servidor_socket, cliente_id):
-
+     
     fim_jogo = False
     vez_jogador = 0 
     while True:
@@ -29,11 +30,10 @@ def partida(servidor_socket, cliente_id):
         print(mensagem)
         break
     # servidor informa qual a palavra para o jogo
-    palavra = comunicacao.recebe_mensagem(servidor_socket)
-    
-    print(palavra)
+    palavra = comunicacao.recebe_mensagem(servidor_socket)[1]
     
     while not fim_jogo:
+            
             if  vez_jogador == 0:
                     print("Aguarde")
             prefixo,mensagem = comunicacao.recebe_mensagem(servidor_socket)
@@ -41,7 +41,7 @@ def partida(servidor_socket, cliente_id):
                     vez_jogador = 1
 
             elif(prefixo == "fim" and mensagem == "ganhou" ):
-                 print("Cliente 1 ganhou")
+                 print("Outro jogador ganhou")
                  break
             while vez_jogador:
     
@@ -50,7 +50,7 @@ def partida(servidor_socket, cliente_id):
                     servidor_socket.sendall(f"{cliente_id}:{letra}".encode())
                     # recebe a mensagem do servidor depois de jogar
                     chance,mensagem = comunicacao.recebe_mensagem(servidor_socket)
-                    forca.imprime_palavra(palavra,mensagem)
+                    
 
                     # recebe a mensagem informando quantas chances o cliente tem
                     print("Voce tem ",chance,"chances")
